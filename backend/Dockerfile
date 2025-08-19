@@ -1,39 +1,20 @@
-# ---------- Stage 1: Build Dependencies ----------
-FROM node:18 AS builder
+# Use official Node.js LTS image
+FROM node:18-alpine
 
 # Set working directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Copy package.json and lock file
+# Copy package.json and package-lock.json first (better caching)
 COPY package*.json ./
 
-# Install all dependencies (including dev)
-RUN npm install
+# Install dependencies
+RUN npm install --production
 
-# Copy source code
+# Copy rest of the application code
 COPY . .
 
-# Generate Prisma client
-RUN npx prisma generate
+# Expose application port (change if needed)
+EXPOSE 5000
 
-# ---------- Stage 2: Production Image ----------
-FROM node:18-slim
-
-# Install only production dependencies
-WORKDIR /app
-COPY package*.json ./
-RUN npm install --only=production
-
-# Copy prisma schema and generated client from builder
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-
-# Copy only necessary source files
-COPY --from=builder /app/server.js ./server.js
-COPY --from=builder /app/src ./src
-
-# Expose port
-EXPOSE 3000
-
-# Start the app
+# Start the backend server
 CMD ["node", "server.js"]

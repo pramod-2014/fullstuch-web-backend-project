@@ -16,8 +16,9 @@ app.get("/", (req, res) => {
   res.send("Backend API is running...");
 });
 
+// ✅ Must listen on 0.0.0.0 for Docker
 const PORT = process.env.PORT || 5000;
-const HOST = "0.0.0.0";   // 👈 yeh add karo
+const HOST = "0.0.0.0";
 
 app.listen(PORT, HOST, () => {
   console.log(`🚀 Server running on http://${HOST}:${PORT}`);
