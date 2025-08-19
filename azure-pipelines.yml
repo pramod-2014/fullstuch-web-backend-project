@@ -11,7 +11,7 @@ pool:
 
 variables:
   dockerRegistryServiceConnection: 'DockerHubConnection'
-  imageRepository: 'backend'
+  imageRepository: 'prmd77/backend'
   containerRegistry: 'prmd77'
   tag: '$(Build.BuildId)'
   kubernetesServiceConnection: 'aks-service-connection'
