@@ -1,9 +1,12 @@
-import express from "express";
-import { fetchUsers, addUser } from "../controllers/userController.js";
-
+import express from 'express';
 const router = express.Router();
 
-router.get("/", fetchUsers);
-router.post("/", addUser);
+router.post('/signup', (req, res) => {
+  const { name, email, password } = req.body;
+  
+  // Yahan apna DB logic ya validation dal sakta hai
+  // For now, simple response bhejte hain:
+  res.json({ message: 'User signup successful', user: { name, email } });
+});
 
 export default router;
