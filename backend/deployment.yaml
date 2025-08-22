@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: prmd77/backend:364
+        image: prmd77/backend:latest
         ports:
         - containerPort: 5000
         env:
