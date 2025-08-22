@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: backend
-        image: prmd77/backend:1.0
+        image: prmd77/backend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         env:
