@@ -1,26 +1,24 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import userRoutes from "./src/routes/userRoutes.js";
+require('dotenv').config();
 
-dotenv.config();
+const { Client } = require('pg');
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-// API Routes
-app.use("/api/users", userRoutes);
-
-app.get("/", (req, res) => {
-  res.send("Backend API is running...");
+const client = new Client({
+  host: process.env.PGHOST,
+  port: process.env.PGPORT,
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  database: process.env.PGDATABASE,
 });
 
-// ✅ Must listen on 0.0.0.0 for Docker
-const PORT = process.env.PORT || 5000;
-const HOST = "0.0.0.0";
+async function connectDB() {
+  try {
+    await client.connect();
+    console.log('✅ Successfully connected to PostgreSQL database!');
+  } catch (error) {
+    console.error('❌ Error connecting to PostgreSQL:', error.stack);
+    process.exit(1);
+  }
+}
 
-app.listen(PORT, HOST, () => {
-  console.log(`🚀 Server running on http://${HOST}:${PORT}`);
-});
+connectDB();
 
