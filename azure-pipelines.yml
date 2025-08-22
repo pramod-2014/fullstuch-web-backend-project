@@ -1,7 +1,7 @@
 trigger:
  branches:
    include:
-     - none
+     - main
 
 pool: 
   name: "Infra-Runners-pool"
