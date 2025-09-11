@@ -1,20 +1,14 @@
 trigger:
- branches:
-   include:
-     - main
+  - none
 
-pool: 
-  name: "Infra-Runners-pool"
-  demands:
-    - agent.name -equals kmaster
+pool: "Default"
+
     
-
 variables:
   dockerRegistryServiceConnection: 'DockerHubConnection'
   imageRepository: 'prmd77/backend'
   containerRegistry: 'prmd77'
   tag: '$(Build.BuildId)'
-  kubernetesServiceConnection: 'aks-service-connection'
   namespace: 'default'
 
 stages:
@@ -22,8 +16,6 @@ stages:
   displayName: Build and Push
   jobs:
   - job: Build
-    
-    
     steps:
     - task: Docker@2
       displayName: Build and Push image
@@ -36,20 +28,16 @@ stages:
           $(tag)
 
 - stage: Deploy
-  displayName: Deploy to AKS
+  displayName: Deploy to VMware K8s
   jobs:
   - job: Deploy
-        
     steps:
-    - task: KubernetesManifest@1
-      displayName: Deploy to AKS
-      inputs:
-        action: deploy
-        kubernetesServiceConnection: $(kubernetesServiceConnection)
-        namespace: $(namespace)
-        manifests: |
-          backend/deployment.yaml
-          backend/service.yaml
-          ingress.yaml
-        containers: |
-          $(containerRegistry)/$(imageRepository):$(tag)
+    # Deploy manifests using kubectl
+    - script: |
+        echo "Deploying to On-Prem Kubernetes cluster..."
+        kubectl apply -f backend/deployment.yaml -n $(namespace)
+        kubectl apply -f backend/service.yaml -n $(namespace)
+        kubectl apply -f ingress.yaml -n $(namespace)
+        kubectl set image deployment/backend backend=$(containerRegistry)/$(imageRepository):$(tag) -n $(namespace)
+        kubectl get pods -n $(namespace)
+      displayName: "Deploy App to On-Prem K8s"
