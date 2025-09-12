@@ -31,11 +31,13 @@ stages:
   jobs:
   - job: Deploy
     steps:
-    
     - task: KubernetesManifest@1
       inputs:
         action: 'deploy'
         connectionType: 'kubernetesServiceConnection'
         kubernetesServiceConnection: 'OnPremKubeConnection'
-        namespace: 'Default'
-        manifests: 'fullstuch-web-backend-project/backend/deployment.yaml'
+        namespace: 'default'
+        manifests: |
+          fullstuch-web-backend-project/backend/deployment.yaml
+          fullstuch-web-backend-project/backend/service.yaml
+          fullstuch-web-backend-project/backend/ingress.yaml
