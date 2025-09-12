@@ -31,12 +31,11 @@ stages:
   jobs:
   - job: Deploy
     steps:
-    - script: |
-        echo "Deploying to On-Prem Kubernetes cluster..."
-        kubectl apply -f backend/deployment.yaml -n $(namespace)
-        kubectl apply -f backend/service.yaml -n $(namespace)
-        kubectl apply -f ingress.yaml -n $(namespace)
-        # ✅ Correct image path
-            kubectl set image deployment/backend backend=prmd77/backend:18 -n $(namespace)
-        kubectl get pods -n $(namespace)
-      displayName: "Deploy App to On-Prem K8s"
+    
+    - task: KubernetesManifest@1
+      inputs:
+        action: 'deploy'
+        connectionType: 'kubernetesServiceConnection'
+        kubernetesServiceConnection: 'OnPremKubeConnection'
+        namespace: 'Default'
+        manifests: 'backend /deployment.yaml'
