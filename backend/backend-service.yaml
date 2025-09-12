@@ -4,9 +4,11 @@ metadata:
   name: backend-service
 spec:
   selector:
-    app: backend   # yahi backend pod ka label hoga
+    app: backend
   ports:
     - protocol: TCP
-      port: 5000       # service port
-      targetPort: 5000 # backend container port
-  type: ClusterIP
+      port: 5000
+      targetPort: 5000
+      nodePort: 30500   # pick a port in 30000-32767
+  type: NodePort
+
