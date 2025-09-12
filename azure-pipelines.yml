@@ -39,5 +39,5 @@ stages:
         connectionType: 'kubernetesServiceConnection'
         kubernetesServiceConnection: 'OnPremKubeConnection'
         namespace: 'default'
-        manifests: '''$(Build.SourcesDirectory)/backend/*.yaml'''
+        manifests: '$(Build.SourcesDirectory)/backend/*.yaml'
 
