@@ -38,4 +38,4 @@ stages:
         connectionType: 'kubernetesServiceConnection'
         kubernetesServiceConnection: 'OnPremKubeConnection'
         namespace: 'Default'
-        manifests: 'backend /deployment.yaml'
+        manifests: 'fullstuch-web-backend-project/backend/deployment.yaml'
