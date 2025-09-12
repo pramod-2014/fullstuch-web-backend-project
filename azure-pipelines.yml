@@ -2,13 +2,11 @@ trigger:
   - none
 
 pool: 
- name: "Default"
+  name: "Default"
 
-    
 variables:
   dockerRegistryServiceConnection: 'DockerHubConnection'
   imageRepository: 'prmd77/backend'
-  containerRegistry: 'prmd77'
   tag: '$(Build.BuildId)'
   namespace: 'default'
 
@@ -33,12 +31,12 @@ stages:
   jobs:
   - job: Deploy
     steps:
-    # Deploy manifests using kubectl
     - script: |
         echo "Deploying to On-Prem Kubernetes cluster..."
         kubectl apply -f backend/deployment.yaml -n $(namespace)
         kubectl apply -f backend/service.yaml -n $(namespace)
         kubectl apply -f ingress.yaml -n $(namespace)
-        kubectl set image deployment/backend backend=$(containerRegistry)/$(imageRepository):$(tag) -n $(namespace)
+        # ✅ Correct image path
+        kubectl set image deployment/backend backend=$(imageRepository):$(tag) -n $(namespace)
         kubectl get pods -n $(namespace)
       displayName: "Deploy App to On-Prem K8s"
