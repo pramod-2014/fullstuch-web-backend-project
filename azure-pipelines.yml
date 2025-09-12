@@ -1,8 +1,9 @@
 trigger:
   - none
 
-pool: 
-  name: "Default"
+pool:
+  vmImage: 'ubuntu-latest'
+  
 
 variables:
 
@@ -37,7 +38,7 @@ stages:
       inputs:
         action: 'deploy'
         connectionType: 'kubernetesServiceConnection'
-        kubernetesServiceConnection: 'OnPremKubeConnection'
+        kubernetesServiceConnection: 'aksServiceConnection'
         namespace: 'default'
         manifests: '$(Build.SourcesDirectory)/backend/*.yaml'
 
