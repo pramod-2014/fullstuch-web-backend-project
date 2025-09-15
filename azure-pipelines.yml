@@ -39,7 +39,7 @@ stages:
       inputs:
         action: 'deploy'
         connectionType: 'kubernetesServiceConnection'
-        kubernetesServiceConnection: 'aksServiceConnection'
+        kubernetesServiceConnection: 'OnPremKubeConnection'
         namespace: 'default'
         manifests: '$(Build.SourcesDirectory)/backend/*.yaml'
 
