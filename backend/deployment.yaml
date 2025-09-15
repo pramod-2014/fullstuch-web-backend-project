@@ -33,9 +33,11 @@ kind: Service
 metadata:
   name: backend-service
 spec:
-  type: LoadBalancer   # ✅ This will expose it externally
+  type: NodePort   # ✅ instead of LoadBalancer
   selector:
     app: backend
   ports:
-    - port: 5000       # Public port
-      targetPort: 5000 # Container port
+    - port: 5000
+      targetPort: 5000
+      nodePort: 30080   # custom port (30000–32767)
+
